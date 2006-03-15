@@ -1,14 +1,14 @@
-\name{ideogram}
-\alias{ideogram}
-\alias{mideogram}
+\name{idiogram}
+\alias{idiogram}
+\alias{midiogram}
 \title{ Plotting of Genomic Data}
 \description{
   Function for plotting genomic data along with corresponding
   cytogenetic banding information
 }
 \usage{
-ideogram(data, genome, chr=NULL, organism=NULL,
-method=c("plot","matplot","image"), margin=c("ticks","ideogram"),
+idiogram(data, genome, chr=NULL, organism=NULL,
+method=c("plot","matplot","image"), margin=c("ticks","idiogram"),
 grid.col=c("red","grey"), grid.lty=c(1,2), widths=c(1,2),
 relative=FALSE, dlim=NULL, main=NA, xlab=NA,
 ylab=NA,cex.axis=.7,na.color = par("bg"),...)
@@ -33,7 +33,7 @@ ylab=NA,cex.axis=.7,na.color = par("bg"),...)
   \item{grid.lty}{ a two element vector specifying the centromere and
     band grid line type.}
   \item{widths}{ a two element vector specifying the relative width of
-    the margin ideogram two the adjacent graph. This option is currently
+    the margin idiogram two the adjacent graph. This option is currently
     ignored.}
   \item{relative}{ If \code{relative} is TRUE, the vertical height of
   the plot is scaled relative to the size of largest chromosome.}
@@ -67,26 +67,26 @@ ylab=NA,cex.axis=.7,na.color = par("bg"),...)
   To date, \code{plot} can be called for vector data, while
   \code{\link{matplot}} and \code{\link{image}} can be called for matrix
   data.  Most additional plotting arguments can be passed down via
-  \dots.  However, the ideogram function plots the axis
+  \dots.  However, the idiogram function plots the axis
   independently. Currently, only the \code{cex.axis},\code{col.axis},
   and \code{font.axis} parameters are intercepted from \dots and
   redirected to the specialized \code{\link{axis}} call. Other
   parameters that effect the axis should be set via \code{\link{par}}.
 
-  The function \code{mideogram} is a simple wrapper around
-  \code{ideogram} to plot all the chromosomes from a particular organism
+  The function \code{midiogram} is a simple wrapper around
+  \code{idiogram} to plot all the chromosomes from a particular organism
   using sensible default values. The \code{"m"} refers to
-  plotting \bold{m}ultiple ideograms.
+  plotting \bold{m}ultiple idiograms.
 }
 
 \author{ Kyle Furge <kyle.furge@vai.org> and Karl Dykema
   <karl.dykema@vai.org>}
 
 \seealso{\code{\link[annotate]{buildChromLocation}},
-  \code{\link{Hs.cytoband}}, \code{\link{ideograb}}}
+  \code{\link{Hs.cytoband}}, \code{\link{idiograb}}}
 
 \examples{
-library(ideogram)
+library(idiogram)
 
 ## 
 ## NOTE:This requires an annotation package to work.
@@ -107,13 +107,13 @@ if(require(hu6800) && require(golubEsets)) {
    gN <- names(ex)
    gN[1:10]   
 
-   ideogram(ex,hu.chr,chr="1")
+   idiogram(ex,hu.chr,chr="1")
 
    colors <- rep("black",times=length(ex))
    colors[ex > 10000] <- "red"
    pts <- rep(1,times=length(ex))
    pts[ex > 10000] <- 2
-   ideogram(ex,hu.chr,chr="1",col=colors,pch=pts,font.axis=2,cex.axis=1)
+   idiogram(ex,hu.chr,chr="1",col=colors,pch=pts,font.axis=2,cex.axis=1)
    abline(v=0,col="darkgreen")
 
    ## An example of the dlim option. It is most useful for making
@@ -122,12 +122,12 @@ if(require(hu6800) && require(golubEsets)) {
    colors[ex > 10000] <- "red"
    colors[ex < 0] <- "blue"
 
-   ideogram(ex,hu.chr,chr="1",col=colors,xlim=c(-3000,21000))
-   ideogram(ex,hu.chr,chr="1",col=colors,dlim=c(-100,7500),xlim=c(-3000,21000))
-   ideogram(ex,hu.chr,chr="1",col=colors,dlim=c(-100,7500),xlim=c(-3000,10000))
+   idiogram(ex,hu.chr,chr="1",col=colors,xlim=c(-3000,21000))
+   idiogram(ex,hu.chr,chr="1",col=colors,dlim=c(-100,7500),xlim=c(-3000,21000))
+   idiogram(ex,hu.chr,chr="1",col=colors,dlim=c(-100,7500),xlim=c(-3000,10000))
 
    ## Using the identify function
-   ip <- ideogram(ex,hu.chr,chr="1",col=colors,pch=19)
+   ip <- idiogram(ex,hu.chr,chr="1",col=colors,pch=19)
    #identify(ip$x,ip$y,labels=ip$labels)
    
 } else print("This example requires the hu6800 and golubEsets data packages.")
@@ -135,26 +135,26 @@ if(require(hu6800) && require(golubEsets)) {
 ## The example data is BAC array CGH data from J. Fridlyand's
 ## aCGH package
 
-data(ideogramExample)
+data(idiogramExample)
 
-ideogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
+idiogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
 
-ideogram(colo.eset@exprs,ucsf.chr,chr="1",method="image")
+idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="image")
 
-ideogram(colo.eset@exprs,ucsf.chr,chr="1",method="image",col=topo.colors(50),grid.lty=c(1,NA))
+idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="image",col=topo.colors(50),grid.lty=c(1,NA))
 
-ideogram(colo.eset@exprs,ucsf.chr,chr="1",method="mat",type="l")
+idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="mat",type="l")
 
 ## for a consistant multi-panel plot it can be helpful to force the data
 ## range within each panel to a defined range using 'dlim'
-## This is similar to calling the 'mideogram' function
+## This is similar to calling the 'midiogram' function
 
 op <- par(no.readonly=TRUE)
 par(mai=par("mai")*c(0.1,0.5,0.5,0.5))
 layout(rbind(c(1:8),c(0,9:14,0),c(15:22)))
 
 for(i in c(1:22)) {
-  ideogram(colo.eset@exprs,ucsf.chr,chr=i,method="i",dlim=c(-1,1),margin="i",relative=TRUE)
+  idiogram(colo.eset@exprs,ucsf.chr,chr=i,method="i",dlim=c(-1,1),margin="i",relative=TRUE)
 }
 
 par(op)

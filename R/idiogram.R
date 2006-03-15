@@ -60,9 +60,9 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
         sep = ""), pos = pEnv))
 
     species <- tolower(substr(get(paste(dataPkg, "ORGANISM", sep = "")), 1, 1))
-    cytoEnv <- switch(species, h = get("Hs.cytoband", "package:ideogram"),
-	r = get("Rn.cytoband", "package:ideogram"), m = get("Mm.cytoband", 
-	"package:ideogram"), NULL)
+    cytoEnv <- switch(species, h = get("Hs.cytoband", "package:idiogram"),
+	r = get("Rn.cytoband", "package:idiogram"), m = get("Mm.cytoband", 
+	"package:idiogram"), NULL)
     if (is.null(cytoEnv)) stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")    
     
     
@@ -220,7 +220,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
   return(list(exprs=as.matrix(exprs),locs=as.numeric(locs),geneIDs=ids,simpleIDs=sids))
 }
 
-ideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","ideogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),...){
+idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),...){
   method <- match.arg(method)
   margin <- match.arg(margin)
   
@@ -234,9 +234,9 @@ ideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
   }
   cytoEnv <- NULL
   cytoEnv <- switch(organism,
-                    "h"=get("Hs.cytoband","package:ideogram"),
-                    "r"=get("Rn.cytoband","package:ideogram"),
-                    "m"=get("Mm.cytoband","package:ideogram"),
+                    "h"=get("Hs.cytoband","package:idiogram"),
+                    "r"=get("Rn.cytoband","package:idiogram"),
+                    "m"=get("Mm.cytoband","package:idiogram"),
                     NULL)
                     
   if(is.null(cytoEnv))
@@ -309,8 +309,8 @@ ideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     par(mai=tempVec)
   }
   
-  if(margin=="ideogram"){
-    ##Draw Ideogram
+  if(margin=="idiogram"){
+    ##Draw idiogram
     oldMai <- par()$mai
     op <- par(no.readonly=TRUE)
     leftOver <- oldMai[2]/7
@@ -423,10 +423,10 @@ ideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
   return(invisible(list(x=z,y=locs-chr.size,labels=ids)))
 }
 
-ideograb <- function(ideo,show.box=TRUE,brush=NULL,...){
-  x <- ideo$x
-  y <- ideo$y
-  ids <- ideo$labels
+idiograb <- function(idio,show.box=TRUE,brush=NULL,...){
+  x <- idio$x
+  y <- idio$y
+  ids <- idio$labels
   cat("Please click on two points to define a retangular region.","\n")
   first <- locator(1)
   second <- locator(1)
@@ -471,7 +471,7 @@ ideograb <- function(ideo,show.box=TRUE,brush=NULL,...){
   return(a[!is.na(a)])
 }
 
-mideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","ideogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=TRUE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,...){
+midiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=TRUE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,...){
   op <- par(no.readonly = TRUE)
   layout(rbind(c(1:8),c(9:16),c(17:24)))
   par(mai= c(par()$mai[1]*.5, par()$mai[2]*.6, par()$mai[3]*.4, par()$mai[4]*.6))		
@@ -486,18 +486,18 @@ mideogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplo
   chroms <- NULL
   chroms <- switch(organism,
                    "h"=c(1:22,"X","Y"),
-                   "r"=get("Rn.cytoband","package:ideogram"),
-                   "m"=get("Mm.cytoband","package:ideogram"),
+                   "r"=get("Rn.cytoband","package:idiogram"),
+                   "m"=get("Mm.cytoband","package:idiogram"),
                    NULL)
   
   if(is.null(chroms))
     stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")
   
   for(i in chroms) {
-    try(  ideogram(data,genome,i,organism=organism,method=method,margin=margin,grid.col=grid.col,grid.lty=grid.lty,widths=widths,relative=relative,dlim=dlim,main=main,xlab=xlab,ylab=ylab,cex.axis=cex.axis,...))
+    try(  idiogram(data,genome,i,organism=organism,method=method,margin=margin,grid.col=grid.col,grid.lty=grid.lty,widths=widths,relative=relative,dlim=dlim,main=main,xlab=xlab,ylab=ylab,cex.axis=cex.axis,...))
   }
   
   if(is.null(dlim)) dlim <- range(data,na.rm=TRUE,finite=TRUE)
-  try(for(i in chr) ideogram(data=data,genome=genome,chr=i,method=method,widths=widths,dlim=dlim,margin=margin,grid.col=grid.col,grid.lty=grid.lty,relative=relative,...))
+  try(for(i in chr) idiogram(data=data,genome=genome,chr=i,method=method,widths=widths,dlim=dlim,margin=margin,grid.col=grid.col,grid.lty=grid.lty,relative=relative,...))
   par(op)
 }

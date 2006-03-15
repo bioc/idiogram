@@ -10,7 +10,7 @@
 }
 \usage{data(Hs.cytoband)}
 \format{
-  Hs.cytoband is an environment containing 24 objects of class "cytoband" as defined by the ideogram package. Rn.cytoband and Mm.cytoband have also been included for the rat and mouse genomes.
+  Hs.cytoband is an environment containing 24 objects of class "cytoband" as defined by the idiogram package. Rn.cytoband and Mm.cytoband have also been included for the rat and mouse genomes.
 }
 \source{
   UCSC Genome Browser

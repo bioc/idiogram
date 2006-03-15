@@ -1,9 +1,9 @@
-\name{ideograb}
-\alias{ideograb}
-\title{ ideograb }
+\name{idiograb}
+\alias{idiograb}
+\title{ idiograb }
 \description{
-  \code{ideograb} reads the position of the graphics pointer
-  when the (first) mouse button is pressed. \code{ideogram} also reads
+  \code{idiograb} reads the position of the graphics pointer
+  when the (first) mouse button is pressed. \code{idiogram} also reads
   a \emph{second} position of the graphics pointer after another
   mouse button press. The two points selected are used to define a
   diagonal line from which a bounding box will be constructed. It then
@@ -11,11 +11,11 @@
   bounding box.
 }
 \usage{
-ideograb(ideo, show.box = TRUE, brush = NULL, ...)
+idiograb(idio, show.box = TRUE, brush = NULL, ...)
 }
 \arguments{
-  \item{ideo}{ point coordinates and cooresponding gene identifiers
-    from an \code{ideogram} function call}
+  \item{idio}{ point coordinates and cooresponding gene identifiers
+    from an \code{idiogram} function call}
   \item{show.box}{ boolean. if TRUE, a box is drawn showing the selected
     region}
   \item{brush}{ a color to highlight the points within the selected region}
@@ -26,7 +26,7 @@ ideograb(ideo, show.box = TRUE, brush = NULL, ...)
 \details{
   Coordinates can be passed in a plotting structure (a list with
   \code{x}, \code{y}, and \code{labels} components). Typically this is
-  generated from a call to \code{ideogram}.
+  generated from a call to \code{idiogram}.
   
   The points selected are used to define the top-left and bottom-right
   locations \emph{or} the bottom-left and top-right locations for
@@ -39,11 +39,11 @@ ideograb(ideo, show.box = TRUE, brush = NULL, ...)
 }
 
 \author{ Karl Dykema <karl.dykema@vai.org> }
-\seealso{ \code{\link{ideogram}} }
+\seealso{ \code{\link{idiogram}} }
 
 \examples{
-data(ideogramExample)
-ip <- ideogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
-if(interactive()) ideograb(ip,brush="red")
+data(idiogramExample)
+ip <- idiogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
+if(interactive()) idiograb(ip,brush="red")
 }
 \keyword{ iplot }

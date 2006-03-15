@@ -2,10 +2,10 @@
 % NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
 % likely to be overwritten.
 %
-% \VignetteIndexEntry{HOWTO: ideogram}
+% \VignetteIndexEntry{HOWTO: idiogram}
 % \VignetteDepends{Biobase,annotate}
-% \VignetteKeywords{Expression, plotting, chromosome, ideogram, cytoband}
-%\VignettePackage{ideogram}
+% \VignetteKeywords{Expression, plotting, chromosome, idiogram, cytoband}
+%\VignettePackage{idiogram}
 
 
 
@@ -23,15 +23,15 @@
 
 
 \begin{document}
-\title{ideogram package}
+\title{idiogram package}
 \author{Karl Dykema}
 \maketitle
 \begin{center}
 Bioinformatics Special Program, Van Andel Research Institute
 \end{center}
 
-\section{Standard ideogram plots}
-     \Rfunction{ideogram} displays cytogenetic banding information in the 
+\section{Standard idiogram plots}
+     \Rfunction{idiogram} displays cytogenetic banding information in the 
      plot margin and calls a secondary plotting function to display
      associated data at the same relative scale.  Cytogenetic data for
      human, mouse, and rat genomes are currently included. We 
@@ -48,7 +48,7 @@ Bioinformatics Special Program, Van Andel Research Institute
 
      To date, 'plot' can be called for vector data, while 'maplot' and
      'image' can be called for matrix data.  Most additional plotting
-     arguments can be passed down via ....  However, the ideogram
+     arguments can be passed down via ....  However, the idiogram
      function plots the axis independently. Therefore arguments like
      'cex.axis' are not passed via the 'plot' function.  The
      'cex.axis','col.axis', and 'font.axis' are intercepted from ...
@@ -56,14 +56,14 @@ Bioinformatics Special Program, Van Andel Research Institute
      the axis should be set via 'par'.
 
 
-	Below some example data is set up to plot an ideogram.
+	Below some example data is set up to plot an idiogram.
 	
 
 <<echo=TRUE, print=FALSE>>=
   if(require(hu6800) && require(golubEsets)){
 	library(golubEsets)
 	library(hu6800)
-	library(ideogram)
+	library(idiogram)
 	library(annotate)
 
 	hu.chr <- buildChromLocation("hu6800")
@@ -82,30 +82,30 @@ Bioinformatics Special Program, Van Andel Research Institute
 
 <<fig=TRUE, echo=TRUE>>=
   if(require(hu6800) && require(golubEsets)){	
-	ideogram(ex,hu.chr,chr="1",col=colors,
+	idiogram(ex,hu.chr,chr="1",col=colors,
 	  pch=pts,font.axis=2,cex.axis=1)
 }
 @
 \end{center}
-\caption{An ideogram}
-\label{cap:ideogram}
+\caption{An idiogram}
+\label{cap:idiogram}
 \end{figure}
 
-\section{Interactive ideogram plots}
+\section{Interactive idiogram plots}
 
 Many investigators have their favorite region of interest, and would find it useful to 
-dynamically interact with their ideogram plots. This has been added through the ideograb 
+dynamically interact with their idiogram plots. This has been added through the idiograb 
 function. This has made an easier way for researchers to identify specific genes within cytogenetic regions of interest.
 
-\Rfunction{ideograb} has been written to take an ideogram call as one of its arguments. 
+\Rfunction{idiograb} has been written to take an idiogram call as one of its arguments. 
 Two points are first clicked on to determine the coordinates of a rectangular 
 region. All names of genes within that region are then returned in a vector.
 
-\section{Using ideogram with other packages}
+\section{Using idiogram with other packages}
 
-Many useful packages can be used in conjunction with \Rfunction{ideogram}. In this section, we will show how to use 
+Many useful packages can be used in conjunction with \Rfunction{idiogram}. In this section, we will show how to use 
 the \Rpackage{limma} package to determine differentially expressed genes and then plot them 
-with \Rfunction{mideogram}. Please see the \Rpackage{limma} tutorial for more information. 
+with \Rfunction{midiogram}. Please see the \Rpackage{limma} tutorial for more information. 
 
 The \Rfunction{topTable} function returns a data frame with information about differentially 
 expressed genes. Here we show how you would use the results of \Rfunction{topTable} ("t") and
@@ -128,7 +128,7 @@ colors[which(data<(-1))] <- "blue"
 
 names(colors) <- names(data)
 
-mideogram(data,chromLocation,xlim=c(-5,5),col=colors,pch=20)
+midiogram(data,chromLocation,xlim=c(-5,5),col=colors,pch=20)
 	
 
 \end{document}

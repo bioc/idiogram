@@ -1,6 +1,6 @@
-Package: ideogram
-Version: 1.5.2
-Title: ideogram
+Package: idiogram
+Version: 1.5.3
+Title: idiogram
 Description: A package for plotting genomic data by chromosomal
         location
 Author: Kyle A. Furge <kyle.furge@vai.org>
