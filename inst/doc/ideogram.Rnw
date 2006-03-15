@@ -1,0 +1,134 @@
+%
+% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
+% likely to be overwritten.
+%
+% \VignetteIndexEntry{HOWTO: ideogram}
+% \VignetteDepends{Biobase,annotate}
+% \VignetteKeywords{Expression, plotting, chromosome, ideogram, cytoband}
+%\VignettePackage{ideogram}
+
+
+
+\documentclass{article}
+\SweaveOpts{eps=false}
+
+\usepackage{hyperref}
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+
+
+\begin{document}
+\title{ideogram package}
+\author{Karl Dykema}
+\maketitle
+\begin{center}
+Bioinformatics Special Program, Van Andel Research Institute
+\end{center}
+
+\section{Standard ideogram plots}
+     \Rfunction{ideogram} displays cytogenetic banding information in the 
+     plot margin and calls a secondary plotting function to display
+     associated data at the same relative scale.  Cytogenetic data for
+     human, mouse, and rat genomes are currently included. We 
+     have written this due to a large volume of traditional 
+     cytogenetic data currently available.
+
+     The data is arranged by associating feature identifiers to genomic
+     location using a \Robject{chromLoc} annotation object build using the
+     \Rfunction{buildChromLocation} from the annotation package. As such is a
+     vector of data is to be plotted, the 'names' attribute of the
+     vector MUST to contain the gene identifiers.  Likewise if a
+     matrix of data is to be plotted, the 'rownames' attribute of the
+     matrix MUST to the gene identifiers.
+
+     To date, 'plot' can be called for vector data, while 'maplot' and
+     'image' can be called for matrix data.  Most additional plotting
+     arguments can be passed down via ....  However, the ideogram
+     function plots the axis independently. Therefore arguments like
+     'cex.axis' are not passed via the 'plot' function.  The
+     'cex.axis','col.axis', and 'font.axis' are intercepted from ...
+     and redirected to the 'axis' call.  Other parameters that effect
+     the axis should be set via 'par'.
+
+
+	Below some example data is set up to plot an ideogram.
+	
+
+<<echo=TRUE, print=FALSE>>=
+  if(require(hu6800) && require(golubEsets)){
+	library(golubEsets)
+	library(hu6800)
+	library(ideogram)
+	library(annotate)
+
+	hu.chr <- buildChromLocation("hu6800")
+        ex <- golubTrain@exprs[,1]
+	colors <- rep("black",times=length(ex))
+        colors[ex > 10000] <- "red"
+        pts <- rep(1,times=length(ex))
+        pts[ex > 10000] <- 2
+}
+@ 
+	
+	
+
+\begin{figure}[htbp]
+\begin{center}
+
+<<fig=TRUE, echo=TRUE>>=
+  if(require(hu6800) && require(golubEsets)){	
+	ideogram(ex,hu.chr,chr="1",col=colors,
+	  pch=pts,font.axis=2,cex.axis=1)
+}
+@
+\end{center}
+\caption{An ideogram}
+\label{cap:ideogram}
+\end{figure}
+
+\section{Interactive ideogram plots}
+
+Many investigators have their favorite region of interest, and would find it useful to 
+dynamically interact with their ideogram plots. This has been added through the ideograb 
+function. This has made an easier way for researchers to identify specific genes within cytogenetic regions of interest.
+
+\Rfunction{ideograb} has been written to take an ideogram call as one of its arguments. 
+Two points are first clicked on to determine the coordinates of a rectangular 
+region. All names of genes within that region are then returned in a vector.
+
+\section{Using ideogram with other packages}
+
+Many useful packages can be used in conjunction with \Rfunction{ideogram}. In this section, we will show how to use 
+the \Rpackage{limma} package to determine differentially expressed genes and then plot them 
+with \Rfunction{mideogram}. Please see the \Rpackage{limma} tutorial for more information. 
+
+The \Rfunction{topTable} function returns a data frame with information about differentially 
+expressed genes. Here we show how you would use the results of \Rfunction{topTable} ("t") and
+a chromLocation object that contains chip-specific annotation information. In this case, we need to create a 
+vector of values with the names attribute set to the corresponding gene name. A colors vector is created with 
+"gray" as the base color, and then altered to accentuate the values with an absolute value of greater than 1. Please note, 
+the actual data was not included with this package to save space. This is only example code.
+
+
+
+data <- t\$M
+
+names(data) <- rownames(t)
+
+colors <- rep("gray",length(data))
+
+colors[which(data>1)] <- "red"
+
+colors[which(data<(-1))] <- "blue"
+
+names(colors) <- names(data)
+
+mideogram(data,chromLocation,xlim=c(-5,5),col=colors,pch=20)
+	
+
+\end{document}
