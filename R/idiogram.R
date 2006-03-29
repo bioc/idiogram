@@ -68,7 +68,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
     
     chrLocListNames <- names(chrLocList)
     badNames <- NULL
-    for(i in 1:length(chrLocListNames)) if(inherits(try(get(chrLocListNames[i], pos = cytoEnv),silent=T), "try-error")) badNames <- c(badNames,i)
+    for(i in 1:length(chrLocListNames)) if(inherits(try(get(chrLocListNames[i], pos = cytoEnv,mode="list"),silent=T), "try-error")) badNames <- c(badNames,i)
     chrLocListNames <- chrLocListNames[-badNames]
     
     
