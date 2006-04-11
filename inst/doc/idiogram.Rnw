@@ -62,6 +62,7 @@ Bioinformatics Special Program, Van Andel Research Institute
 <<echo=TRUE, print=FALSE>>=
   if(require(hu6800) && require(golubEsets)){
 	library(golubEsets)
+	data(golubTrain)
 	library(hu6800)
 	library(idiogram)
 	library(annotate)
