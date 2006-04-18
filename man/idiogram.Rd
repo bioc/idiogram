@@ -98,10 +98,10 @@ library(idiogram)
 
 if(require(hu6800) && require(golubEsets)) {
    library(golubEsets)
-   data(golubTrain)
+   data(Golub_Train)
 
    hu.chr <- buildChromLocation("hu6800")
-   ex <- golubTrain@exprs[,1]
+   ex <- assayData(Golub_Train)$exprs[,1]
 
    ## make sure the names() attribute is set correctly
    gN <- names(ex)
