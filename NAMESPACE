@@ -1,3 +1,4 @@
 exportPattern("^[^\\.]")
 export(.usedChromExprs,.rwb)
 exportClasses("cytoband")
+import(methods, Biobase, annotate)
