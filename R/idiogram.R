@@ -485,9 +485,9 @@ midiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplo
   }
   chroms <- NULL
   chroms <- switch(organism,
-                   "h"=c(1:22,"X","Y"),
-                   "r"=get("Rn.cytoband","package:idiogram"),
-                   "m"=get("Mm.cytoband","package:idiogram"),
+                   "h"=names(attr(genome, "chromInfo")),
+                   "r"=names(attr(genome, "chromInfo")),
+                   "m"=names(attr(genome, "chromInfo")),
                    NULL)
   
   if(is.null(chroms))
@@ -497,7 +497,7 @@ midiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplo
     try(  idiogram(data,genome,i,organism=organism,method=method,margin=margin,grid.col=grid.col,grid.lty=grid.lty,widths=widths,relative=relative,dlim=dlim,main=main,xlab=xlab,ylab=ylab,cex.axis=cex.axis,...))
   }
   
-  if(is.null(dlim)) dlim <- range(data,na.rm=TRUE,finite=TRUE)
-  try(for(i in chr) idiogram(data=data,genome=genome,chr=i,method=method,widths=widths,dlim=dlim,margin=margin,grid.col=grid.col,grid.lty=grid.lty,relative=relative,...))
+  #if(is.null(dlim)) dlim <- range(data,na.rm=TRUE,finite=TRUE)
+  #try(for(i in chr) idiogram(data=data,genome=genome,chr=i,method=method,widths=widths,dlim=dlim,margin=margin,grid.col=grid.col,grid.lty=grid.lty,relative=relative,...))
   par(op)
 }
