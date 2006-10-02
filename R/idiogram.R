@@ -471,7 +471,7 @@ idiograb <- function(idio,show.box=TRUE,brush=NULL,...){
   return(a[!is.na(a)])
 }
 
-midiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=TRUE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,...){
+midiogram <- function(data,genome,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=TRUE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,...){
   op <- par(no.readonly = TRUE)
   layout(rbind(c(1:8),c(9:16),c(17:24)))
   par(mai= c(par()$mai[1]*.5, par()$mai[2]*.6, par()$mai[3]*.4, par()$mai[4]*.6))		
@@ -497,7 +497,5 @@ midiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplo
     try(  idiogram(data,genome,i,organism=organism,method=method,margin=margin,grid.col=grid.col,grid.lty=grid.lty,widths=widths,relative=relative,dlim=dlim,main=main,xlab=xlab,ylab=ylab,cex.axis=cex.axis,...))
   }
   
-  #if(is.null(dlim)) dlim <- range(data,na.rm=TRUE,finite=TRUE)
-  #try(for(i in chr) idiogram(data=data,genome=genome,chr=i,method=method,widths=widths,dlim=dlim,margin=margin,grid.col=grid.col,grid.lty=grid.lty,relative=relative,...))
   par(op)
 }

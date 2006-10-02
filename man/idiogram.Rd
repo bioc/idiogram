@@ -74,7 +74,7 @@ ylab=NA,cex.axis=.7,na.color = par("bg"),...)
   parameters that effect the axis should be set via \code{\link{par}}.
 
   The function \code{midiogram} is a simple wrapper around
-  \code{idiogram} to plot all the chromosomes from a particular organism
+  \code{idiogram} to plot \bold{all the chromosomes from a particular organism}
   using sensible default values. The \code{"m"} refers to
   plotting \bold{m}ultiple idiograms.
 }
