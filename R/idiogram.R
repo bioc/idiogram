@@ -69,7 +69,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
     chrLocListNames <- names(chrLocList)
     badNames <- NULL
     for(i in 1:length(chrLocListNames)) if(inherits(try(get(chrLocListNames[i], pos = cytoEnv,mode="list"),silent=T), "try-error")) badNames <- c(badNames,i)
-    chrLocListNames <- chrLocListNames[-badNames]
+    if(!is.null(badNames)) chrLocListNames <- chrLocListNames[-badNames]
     
     
     if("arms" %in% major){
@@ -248,7 +248,10 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
 
   if(is.na(main)) main <- chr
   
-  if(class(data) == "exprSet") data <- data@exprs
+  if(class(data) == "exprSet") {
+	data <- data@exprs
+	.Deprecated(msg=Biobase:::EXPRSET_DEPR_MSG)
+  }
 	  
   if(method == "plot" & !is.vector(data)) {
 	warning(sQuote("data")," needs to be a vector for this plot method: resetting to image")
