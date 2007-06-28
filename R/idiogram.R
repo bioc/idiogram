@@ -220,7 +220,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
   return(list(exprs=as.matrix(exprs),locs=as.numeric(locs),geneIDs=ids,simpleIDs=sids))
 }
 
-idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),...){
+idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),color.cen="red",...){
   method <- match.arg(method)
   margin <- match.arg(margin)
   
@@ -320,23 +320,20 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     newMai <- c(oldMai[1],leftOver,oldMai[3],leftOver + par()$pin[1] + par()$mai[4])
     par(mai=newMai)
     ann <- c("acen","gvar","stalk","gneg","gpos25","gpos50","gpos75","gpos100")
-    bColor <- c("red","grey","blue",grey(4:0/4))  
+    bColor <- c(color.cen,"grey","blue",grey(4:0/4))  
     new.colors <- rev(cyto@stain)
     ord <- match((new.colors),ann)
     bColor <- bColor[ord]
     bands <- (cyto@end-cyto@start)
         ## Draw idiogram ends....
-#    if(drawEnds){
       par(xpd=NA)
-#      bColor[which(bColor=="red")] <- "white"
       barplot(matrix(rev(bands),ncol=1),border="black",col=NA,axes=F)
-      draw.circle(.7,0,.5,n=20,col="black")
-      draw.circle(.7,sum(bands),.5,n=20,col="black")
+      draw.circle(.7,0,.5,n=500,col="black")
+      draw.circle(.7,sum(bands),.5,n=500,col="black")
       par(new=T)
       barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F)
       par(new=T)
-#    }
-    bColor[which(bColor=="red")] <- "white"
+    bColor[which(bColor==color.cen)] <- "white"
     den <- rep(-1,length(bColor))
     den[which(bColor=="white")] <- 20
     barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F,density=den)

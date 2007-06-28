@@ -11,7 +11,7 @@ idiogram(data, genome, chr=NULL, organism=NULL,
 method=c("plot","matplot","image"), margin=c("ticks","idiogram"),
 grid.col=c("red","grey"), grid.lty=c(1,2), widths=c(1,2),
 relative=FALSE, dlim=NULL, main=NA, xlab=NA,
-ylab=NA,cex.axis=.7,na.color = par("bg"),...)
+ylab=NA,cex.axis=.7,na.color = par("bg"),color.cen="red",...)
 }
 
 \arguments{
@@ -47,6 +47,7 @@ ylab=NA,cex.axis=.7,na.color = par("bg"),...)
   \item{cex.axis}{ the magnification to be used for axis annotation
     relative to the current.}
   \item{na.color}{ color to be used for NA values, defaults to: par("bg")}
+  \item{color.cen}{ color to be used for the centromere when margin="idiogram", defaults to: "red"}  
   \item{\dots}{ additional graphical parameters can be given as
     arguments.}
 }
