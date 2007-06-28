@@ -325,7 +325,21 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     ord <- match((new.colors),ann)
     bColor <- bColor[ord]
     bands <- (cyto@end-cyto@start)
-    barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=FALSE)
+        ## Draw idiogram ends....
+#    if(drawEnds){
+      par(xpd=NA)
+#      bColor[which(bColor=="red")] <- "white"
+      barplot(matrix(rev(bands),ncol=1),border="black",col=NA,axes=F)
+      draw.circle(.7,0,.5,n=20,col="black")
+      draw.circle(.7,sum(bands),.5,n=20,col="black")
+      par(new=T)
+      barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F)
+      par(new=T)
+#    }
+    bColor[which(bColor=="red")] <- "white"
+    den <- rep(-1,length(bColor))
+    den[which(bColor=="white")] <- 20
+    barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F,density=den)
     par(mai=oldMai,new=TRUE)
   }
 
