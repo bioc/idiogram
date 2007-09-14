@@ -23,7 +23,7 @@
 	library(idiogram)
 	data(Hs.cytoband)
 	data(idiogramExample)
-	idiogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
+	idiogram(colo.eset,ucsf.chr,chr="1")
 
 }
 

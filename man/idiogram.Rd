@@ -138,13 +138,13 @@ if(require(hu6800) && require(golubEsets)) {
 
 data(idiogramExample)
 
-idiogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
+idiogram(colo.eset[,1],ucsf.chr,chr="1")
 
-idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="image")
+idiogram(colo.eset,ucsf.chr,chr="1",method="image")
 
-idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="image",col=topo.colors(50),grid.lty=c(1,NA))
+idiogram(colo.eset,ucsf.chr,chr="1",method="image",col=topo.colors(50),grid.lty=c(1,NA))
 
-idiogram(colo.eset@exprs,ucsf.chr,chr="1",method="mat",type="l")
+idiogram(colo.eset,ucsf.chr,chr="1",method="mat",type="l")
 
 ## for a consistant multi-panel plot it can be helpful to force the data
 ## range within each panel to a defined range using 'dlim'
@@ -155,7 +155,7 @@ par(mai=par("mai")*c(0.1,0.5,0.5,0.5))
 layout(rbind(c(1:8),c(0,9:14,0),c(15:22)))
 
 for(i in c(1:22)) {
-  idiogram(colo.eset@exprs,ucsf.chr,chr=i,method="i",dlim=c(-1,1),margin="i",relative=TRUE)
+  idiogram(colo.eset,ucsf.chr,chr=i,method="i",dlim=c(-1,1),margin="i",relative=TRUE)
 }
 
 par(op)

@@ -1,8 +1,7 @@
 Package: idiogram
-Version: 1.11.3
+Version: 1.11.4
 Title: idiogram
-Description: A package for plotting genomic data by chromosomal
-        location
+Description: A package for plotting genomic data by chromosomal location
 Author: Karl J. Dykema <karl.dykema@vai.org>
 Maintainer: Karl J. Dykema <karl.dykema@vai.org>
 Depends: R (>= 2.0.0), methods, Biobase, annotate, plotrix

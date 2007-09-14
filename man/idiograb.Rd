@@ -43,7 +43,7 @@ idiograb(idio, show.box = TRUE, brush = NULL, ...)
 
 \examples{
 data(idiogramExample)
-ip <- idiogram(colo.eset@exprs[,1],ucsf.chr,chr="1")
+ip <- idiogram(colo.eset[,1],ucsf.chr,chr="1")
 if(interactive()) idiograb(ip,brush="red")
 }
 \keyword{ iplot }
