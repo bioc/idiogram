@@ -220,7 +220,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
   return(list(exprs=as.matrix(exprs),locs=as.numeric(locs),geneIDs=ids,simpleIDs=sids))
 }
 
-idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),color.cen="red",...){
+idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),cen.color="red",...){
   method <- match.arg(method)
   margin <- match.arg(margin)
   
@@ -320,7 +320,7 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     newMai <- c(oldMai[1],leftOver,oldMai[3],leftOver + par()$pin[1] + par()$mai[4])
     par(mai=newMai)
     ann <- c("acen","gvar","stalk","gneg","gpos25","gpos50","gpos75","gpos100")
-    bColor <- c(color.cen,"grey","blue",grey(4:0/4))  
+    bColor <- c(cen.color,"grey","blue",grey(4:0/4))  
     new.colors <- rev(cyto@stain)
     ord <- match((new.colors),ann)
     bColor <- bColor[ord]
@@ -333,7 +333,7 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
       par(new=T)
       barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F)
       par(new=T)
-    bColor[which(bColor==color.cen)] <- "white"
+    bColor[which(bColor==cen.color)] <- "white"
     den <- rep(-1,length(bColor))
     den[which(bColor=="white")] <- 20
     barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F,density=den)
