@@ -246,11 +246,11 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
   if(inherits(cyto,"try-error"))
     stop("Chromosome ",chr," is not recognized")
 
-  if(is.na(main)) main <- chr
+  if(is.na(main))
+	main <- chr
   
-  if(class(data) == "exprSet") {
-	data <- data@exprs
-	.Deprecated(msg=Biobase:::EXPRSET_DEPR_MSG)
+  if(is(data,"ExpressionSet")) {
+	data <- exprs(data)
   }
 	  
   if(method == "plot" & !is.vector(data)) {
