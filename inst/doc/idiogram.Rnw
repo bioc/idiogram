@@ -60,10 +60,10 @@ Bioinformatics Special Program, Van Andel Research Institute
 	
 
 <<echo=TRUE, print=FALSE>>=
-  if(require(hu6800) && require(golubEsets)){
+  if(require(hu6800.db) && require(golubEsets)){
 	library(golubEsets)
 	data(golubTrain)
-	library(hu6800)
+	library(hu6800.db)
 	library(idiogram)
 	library(annotate)
 
@@ -82,7 +82,7 @@ Bioinformatics Special Program, Van Andel Research Institute
 \begin{center}
 
 <<fig=TRUE, echo=TRUE>>=
-  if(require(hu6800) && require(golubEsets)){	
+  if(require(hu6800.db) && require(golubEsets)){	
 	idiogram(ex,hu.chr,chr="1",col=colors,
 	  pch=pts,font.axis=2,cex.axis=1)
 }

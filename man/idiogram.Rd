@@ -91,13 +91,13 @@ library(idiogram)
 
 ## 
 ## NOTE:This requires an annotation package to work.
-##      In this example packages "hu6800" and "golubEsets" are used.
+##      In this example packages "hu6800.db" and "golubEsets" are used.
 ##      They can be downloaded from http://www.bioconductor.org
-##      "hu6800" is under MetaData, "golubEsets" is under Experimental
+##      "hu6800.db" is under MetaData, "golubEsets" is under Experimental
 ##      Data.
 
 
-if(require(hu6800) && require(golubEsets)) {
+if(require(hu6800.db) && require(golubEsets)) {
    library(golubEsets)
    data(Golub_Train)
 
@@ -131,7 +131,7 @@ if(require(hu6800) && require(golubEsets)) {
    ip <- idiogram(ex,hu.chr,chr="1",col=colors,pch=19)
    #identify(ip$x,ip$y,labels=ip$labels)
    
-} else print("This example requires the hu6800 and golubEsets data packages.")
+} else print("This example requires the hu6800.db and golubEsets data packages.")
 
 ## The example data is BAC array CGH data from J. Fridlyand's
 ## aCGH package
