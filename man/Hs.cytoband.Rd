@@ -2,6 +2,7 @@
 \alias{Hs.cytoband}
 \alias{Rn.cytoband}
 \alias{Mm.cytoband}
+\alias{Cf.cytoband}
 \docType{data}
 \title{Cytogenetic Banding information}
 \description{

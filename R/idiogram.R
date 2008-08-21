@@ -15,8 +15,8 @@ setClass("cytoband",representation(stain="character",
                                    start="numeric",
                                    end="numeric",
                                    length="integer"))
-
-buildChromLocation.2 <- function (dataPkg,major=NULL) 
+  
+buildChromLocation.2 <- function (dataPkg, major = NULL)
 {
     CHRLOC2chromLoc <- function(chrEnv) {
         chrLocs <- contents(chrEnv)
@@ -25,7 +25,7 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
         singleNames <- names(multis$"1")
         singleLocs <- chrLocs[singleNames]
         chromNames <- unlist(sapply(singleLocs, function(z) {
-            if (is.na(z)) 
+            if (is.na(z))
                 z
             else names(z)
         }))
@@ -46,106 +46,122 @@ buildChromLocation.2 <- function (dataPkg,major=NULL)
                   curGene <- curLocs[[j]]
                   curGeneChroms <- names(curGene)
                   names(curGene) <- rep(curNames[j], length(curGene))
-                  for (k in 1:length(curGene)) chrLocList[[curGeneChroms[k]]] <- c(chrLocList[[curGeneChroms[k]]], 
+                  for (k in 1:length(curGene)) chrLocList[[curGeneChroms[k]]] <- c(chrLocList[[curGeneChroms[k]]],
                     curGene[k])
                 }
             }
         }
         chrLocList
     }
-    if (!require(dataPkg, character.only = TRUE)) 
+
+    if (!require(dataPkg, character.only = TRUE))
         stop(paste("Package:", dataPkg, "is not available"))
     pEnv <- paste("package", dataPkg, sep = ":")
-    chrLocList <- CHRLOC2chromLoc(get(paste(dataPkg, "CHRLOC", 
+    chrLocList <- CHRLOC2chromLoc(get(paste(gsub(".db","",dataPkg), "CHRLOC",
         sep = ""), pos = pEnv))
-
-    species <- tolower(substr(get(paste(dataPkg, "ORGANISM", sep = "")), 1, 1))
-    cytoEnv <- switch(species, h = get("Hs.cytoband", "package:idiogram"),
-	r = get("Rn.cytoband", "package:idiogram"), m = get("Mm.cytoband", 
-	"package:idiogram"), NULL)
-    if (is.null(cytoEnv)) stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")    
-    
-    
+    species <- tolower(substr(get(paste(gsub(".db","",dataPkg), "ORGANISM",
+        sep = "")), 1, 1))
+    cytoEnv <- switch(species, 
+        h = get("Hs.cytoband", "package:idiogram"),
+        r = get("Rn.cytoband", "package:idiogram"),
+        m = get("Mm.cytoband", "package:idiogram"),
+        d = get("Cf.cytoband", "package:idiogram"), NULL)
+    if (is.null(cytoEnv))
+        stop("Cannot determine organism type, please specify (h)uman, (r)at, (m)ouse, or (d)og.")
     chrLocListNames <- names(chrLocList)
     badNames <- NULL
-    for(i in 1:length(chrLocListNames)) if(inherits(try(get(chrLocListNames[i], pos = cytoEnv,mode="list"),silent=T), "try-error")) badNames <- c(badNames,i)
-    if(!is.null(badNames)) chrLocListNames <- chrLocListNames[-badNames]
-    
-    
-    if("arms" %in% major){
-
-	chrLocList2 <- list()
-	armList <- NULL
-	for(i in chrLocListNames){
-		cyto <- try(get(i, pos = cytoEnv),silent=T)
-		if (inherits(cyto, "try-error")) next()
-		breakPoint <- cyto@start[min(grep("q",cyto@band))]
-		ps <- chrLocList[[i]][chrLocList[[i]] < breakPoint]
-		qs <- chrLocList[[i]][chrLocList[[i]] > breakPoint]
-		l <- length(chrLocList2)
-		names <- names(chrLocList2)
-		chrLocList2 <- c(chrLocList2,list(ps))
-		chrLocList2 <- c(chrLocList2,list(qs))
-		names(chrLocList2) <- c(names,paste(i,"p",sep=""),paste(i,"q",sep=""))
-		armList <- c(armList,paste(i,"p",sep=""),paste(i,"q",sep=""))
-	}
-	chrLocList <- c(chrLocList,chrLocList2,armList=list(armList))
-	
+    for (i in 1:length(chrLocListNames)) if (inherits(try(get(chrLocListNames[i],
+        pos = cytoEnv), silent = T), "try-error"))
+        badNames <- c(badNames, i)
+    if (!is.null(badNames))
+        chrLocListNames <- chrLocListNames[-badNames]
+    if ("arms" %in% major) {
+        chrLocList2 <- list()
+        armList <- NULL
+        for (i in chrLocListNames) {
+            cyto <- try(get(i, pos = cytoEnv), silent = T)
+            if (inherits(cyto, "try-error"))
+                next()
+            breakPoint <- cyto@start[min(grep("q", cyto@band))]
+            ps <- chrLocList[[i]][abs(chrLocList[[i]]) < breakPoint]
+            qs <- chrLocList[[i]][abs(chrLocList[[i]]) > breakPoint]
+            l <- length(chrLocList2)
+            names <- names(chrLocList2)
+            chrLocList2 <- c(chrLocList2, list(ps))
+            chrLocList2 <- c(chrLocList2, list(qs))
+            names(chrLocList2) <- c(names, paste(i, "p", sep = ""),
+                paste(i, "q", sep = ""))
+            armList <- c(armList, paste(i, "p", sep = ""), paste(i,
+                "q", sep = ""))
+        }
+        chrLocList <- c(chrLocList, chrLocList2, armList = list(armList))
     }
-    
-    if("bands" %in% major){
-	chrLocList2 <- list()
-	bandList <- NULL
-	for(i in chrLocListNames){
-		cyto <- try(get(i, pos = cytoEnv),silent=T)
-		if (inherits(cyto, "try-error")) next()
-		bands <- try(gsub("\\..*", "", cyto@band),silent=T)
-		if (inherits(bands, "try-error")) next()	
-		ix <- !duplicated(bands)
-		bands <- bands[ix]
-		bands2 <- paste(i,bands,sep="")
-		start <- cyto@start[ix]
-		names <- names(chrLocList2)
-		for(j in 1:length(bands)){
-			if(j < length(bands)){
-				toAdd <- chrLocList[[i]][(start[j] < chrLocList[[i]]) & (start[j+1] > chrLocList[[i]])]
-			} else if(j==length(bands)){
-				toAdd <- chrLocList[[i]][(start[j] < chrLocList[[i]])]
-			}
-			chrLocList2 <- c(chrLocList2,list(toAdd))
-		}
-		names(chrLocList2) <- c(names,bands2)
-		bandList <- c(bandList,bands2)
-	}
-	chrLocList <- c(chrLocList,chrLocList2,bandList=list(bandList))
+    if ("bands" %in% major) {
+        chrLocList2 <- list()
+        bandList <- NULL
+        for (i in chrLocListNames) {
+            cyto <- try(get(i, pos = cytoEnv), silent = T)
+            if (inherits(cyto, "try-error"))
+                next()
+            bands <- try(gsub("\\..*", "", cyto@band), silent = T)
+            if (inherits(bands, "try-error"))
+                next()
+            ix <- !duplicated(bands)
+            bands <- bands[ix]
+            bands2 <- paste(i, bands, sep = "")
+            start <- cyto@start[ix]
+            names <- names(chrLocList2)
+            for (j in 1:length(bands)) {
+                if (j < length(bands)) {
+                  toAdd <- chrLocList[[i]][(start[j] < abs(chrLocList[[i]])) & (start[j + 1] > abs(chrLocList[[i]]))]
+                }
+                else if (j == length(bands)) {
+                  toAdd <- chrLocList[[i]][(start[j] < abs(chrLocList[[i]]))]
+                }
+                chrLocList2 <- c(chrLocList2, list(toAdd))
+            }
+            names(chrLocList2) <- c(names, bands2)
+            bandList <- c(bandList, bands2)
+        }
+        chrLocList <- c(chrLocList, chrLocList2, bandList = list(bandList))
     }
-    
-
-    if("mb" %in% major){
-	chrLocList2 <- list()
-	mbNamesList <- NULL
-	for(i in chrLocListNames){
-		cyto <- try(get(i, pos = cytoEnv),silent=T)
-		if (inherits(cyto, "try-error")) next()
-		
-		megaNames <- paste(i,as.character(as.integer(seq(0,floor(max(chrLocList[[i]])/1000000)*1000000,1000000))),sep="-")
-		megaList <- split(chrLocList[[i]],seq(0,floor(max(chrLocList[[i]])/1000000)*1000000,1000000))
-		names <- names(chrLocList2)
-		chrLocList2 <- c(chrLocList2,megaList)
-		names(chrLocList2) <- c(names,megaNames)
-		mbNamesList <- c(mbNamesList,megaNames)
-	}
-	chrLocList <- c(chrLocList,chrLocList2,mbList=list(mbNamesList))
-    }    
-
-    newCC <- new("chromLocation", organism = get(paste(dataPkg, 
-        "ORGANISM", sep = ""), pos = pEnv), dataSource = dataPkg, 
-        chromLocs = chrLocList, chromInfo = get(paste(dataPkg, 
-            "CHRLENGTHS", sep = ""), pos = pEnv), probesToChrom = get(paste(dataPkg, 
-            "CHR", sep = ""), pos = pEnv), geneSymbols = get(paste(dataPkg, 
+    if ("mb" %in% major) {
+        chrLocList2 <- list()
+        mbNamesList <- NULL
+        for (i in chrLocListNames) {
+            cyto <- try(get(i, pos = cytoEnv), silent = T)
+            if (inherits(cyto, "try-error"))
+                next()
+            megaNames <- paste(i, as.character(as.integer(seq(0,
+                floor(max(chrLocList[[i]])/1e+06) * 1e+06, 1e+06))),
+                sep = "-")
+            megaList <- list()
+            for(q in 1:length(megaNames)){
+              if(!q==length(megaNames)){
+                test <- as.numeric(gsub(".*-","",megaNames[q:(q+1)]))
+                megaList[[q]] <- chrLocList[[i]][abs(chrLocList[[i]]) > test[1] & abs(chrLocList[[i]]) < test[2]]
+              }
+              if(q==length(megaNames)){
+                test <- as.numeric(gsub(".*-","",megaNames[q]))
+                megaList[[q]] <- chrLocList[[i]][abs(chrLocList[[i]]) > test[1]]
+              }
+            }
+            names <- names(chrLocList2)
+            chrLocList2 <- c(chrLocList2, megaList)
+            names(chrLocList2) <- c(names, megaNames)
+            mbNamesList <- c(mbNamesList, megaNames)
+        }
+        chrLocList <- c(chrLocList, chrLocList2, mbList = list(mbNamesList))
+    }
+    newCC <- new("chromLocation", organism = get(paste(gsub(".db","",dataPkg),
+        "ORGANISM", sep = ""), pos = pEnv), dataSource = dataPkg,
+        chromLocs = chrLocList, chromInfo = get(paste(gsub(".db","",dataPkg),
+            "CHRLENGTHS", sep = ""), pos = pEnv), probesToChrom = get(paste(gsub(".db","",dataPkg),
+            "CHR", sep = ""), pos = pEnv), geneSymbols = get(paste(gsub(".db","",dataPkg),
             "SYMBOL", sep = ""), pos = pEnv))
     return(newCC)
 }
+
 
 
 
@@ -237,6 +253,7 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
                     "h"=get("Hs.cytoband","package:idiogram"),
                     "r"=get("Rn.cytoband","package:idiogram"),
                     "m"=get("Mm.cytoband","package:idiogram"),
+                    "d"=get("Cf.cytoband","package:idiogram"),
                     NULL)
                     
   if(is.null(cytoEnv))
@@ -487,9 +504,6 @@ idiograb <- function(idio,show.box=TRUE,brush=NULL,...){
 
 midiogram <- function(data,genome,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=TRUE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,...){
   op <- par(no.readonly = TRUE)
-  layout(rbind(c(1:8),c(9:16),c(17:24)))
-  par(mai= c(par()$mai[1]*.5, par()$mai[2]*.6, par()$mai[3]*.4, par()$mai[4]*.6))		
-  
   if(is.null(dlim)) dlim <- range(data,na.rm=TRUE)
   if(is.null(organism)) {
     organism <- tolower(substr(genome@organism,1,1))
@@ -502,10 +516,19 @@ midiogram <- function(data,genome,organism=NULL,method=c("plot","matplot","image
                    "h"=names(attr(genome, "chromInfo")),
                    "r"=names(attr(genome, "chromInfo")),
                    "m"=names(attr(genome, "chromInfo")),
+                   "d"=names(attr(genome, "chromInfo")),
                    NULL)
   
   if(is.null(chroms))
-    stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")
+    stop("Cannot determine organism type, please specify (h)uman, (r)at, (d)og, or (m)ouse")
+
+  chroms <- chroms[order(as.numeric(chroms))]
+  if(length(chroms) < 25) layout(rbind(c(1:8),c(9:16),c(17:24)))
+  else layout(rbind(c(1:10),c(11:20),c(21:30),c(31:40)))
+
+  par(mai= c(par()$mai[1]*.5, par()$mai[2]*.6, par()$mai[3]*.4, par()$mai[4]*.6))		
+  
+  
   
   for(i in chroms) {
     try(  idiogram(data,genome,i,organism=organism,method=method,margin=margin,grid.col=grid.col,grid.lty=grid.lty,widths=widths,relative=relative,dlim=dlim,main=main,xlab=xlab,ylab=ylab,cex.axis=cex.axis,...))
