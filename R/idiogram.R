@@ -383,7 +383,7 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     def.args <- list(y=y,x=z,ylim=ylim,axes=FALSE,main=main,xlab=xlab,ylab=ylab)
     args <- c(def.args,args)
 
-    do.call("plot",args)
+    do.call(plot,args)
     axis(1,cex.axis=cex.axis,font.axis=font.axis,col.axis=col.axis)
 ##    plot(y=y,x=z,ylim=ylim,axes=FALSE,main=main,xlab=xlab,ylab=ylab,col=col,pch=pch, ...)
   }
