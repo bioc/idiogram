@@ -65,9 +65,9 @@ buildChromLocation.2 <- function (dataPkg, major = NULL)
         h = get("Hs.cytoband", "package:idiogram"),
         r = get("Rn.cytoband", "package:idiogram"),
         m = get("Mm.cytoband", "package:idiogram"),
-        d = get("Cf.cytoband", "package:idiogram"), NULL)
+        c = get("Cf.cytoband", "package:idiogram"), NULL)
     if (is.null(cytoEnv))
-        stop("Cannot determine organism type, please specify (h)uman, (r)at, (m)ouse, or (d)og.")
+        stop("Cannot determine organism type, please specify (h)uman, (r)at, (m)ouse, or (c)anine.")
     chrLocListNames <- names(chrLocList)
     badNames <- NULL
     for (i in 1:length(chrLocListNames)) if (inherits(try(get(chrLocListNames[i],
