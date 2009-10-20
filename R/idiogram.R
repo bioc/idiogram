@@ -236,7 +236,7 @@ buildChromLocation.2 <- function (dataPkg, major = NULL)
   return(list(exprs=as.matrix(exprs),locs=as.numeric(locs),geneIDs=ids,simpleIDs=sids))
 }
 
-idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),cen.color="red",...){
+idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot","image"),margin=c("ticks","idiogram"),grid.col=c("red","grey"),grid.lty=c(1,2),widths=c(1,2),relative=FALSE,dlim=NULL,main=NA,xlab=NA,ylab=NA,cex.axis=.7,na.color=par("bg"),cen.color="red",mb=FALSE,...){
   method <- match.arg(method)
   margin <- match.arg(margin)
   
@@ -255,21 +255,17 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
                     "m"=get("Mm.cytoband","package:idiogram"),
                     "d"=get("Cf.cytoband","package:idiogram"),
                     NULL)
-                    
-  if(is.null(cytoEnv))
-    stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")
-
+    #need a cyto environment                    
+  if(is.null(cytoEnv)) stop("Cannot determine organism type, please specify (h)uman, (r)at, or (m)ouse")
+    #grab chromsome info from cytoband environment
   cyto <- try(get(paste(chr),pos=cytoEnv))
   if(inherits(cyto,"try-error"))
     stop("Chromosome ",chr," is not recognized")
-
-  if(is.na(main))
-	main <- chr
+    #set title
+  if(is.na(main))	main <- chr
   
-  if(is(data,"ExpressionSet")) {
-	data <- exprs(data)
-  }
-	  
+  if(is(data,"ExpressionSet")) data <- exprs(data)
+  
   if(method == "plot" & !is.vector(data)) {
 	warning(sQuote("data")," needs to be a vector for this plot method: resetting to image")
 	method <- "image"
@@ -281,17 +277,27 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
   }
   
   chr.size <- as.integer(max(cyto@end,na.rm=TRUE))
-  if(is.null(chr.size))
-    stop("chromosome ",chr," does not contain size information")
+  if(is.null(chr.size)) stop("chromosome ",chr," does not contain size information")
 
-   chrList <- switch(method,
-                    "plot"= .usedChromExprs(as.matrix(data),genome,chr,NULL),
-                    "matplot"=.usedChromExprs(as.matrix(data),genome,chr,NULL),
-                    "image"=.usedChromExprs(as.matrix(data),genome,chr,.naMean))
-
-  ids <- chrList$geneIDs
-  locs <- chrList$locs
-  z <- chrList$exprs
+  if(mb==FALSE){  
+     chrList <- switch(method,
+                      "plot"= .usedChromExprs(as.matrix(data),genome,chr,NULL),
+                      "matplot"=.usedChromExprs(as.matrix(data),genome,chr,NULL),
+                      "image"=.usedChromExprs(as.matrix(data),genome,chr,.naMean))
+  
+    ids <- chrList$geneIDs
+    locs <- chrList$locs
+    z <- chrList$exprs
+  } else if(mb==TRUE) {
+      
+    front <- paste("^",chr,"-",sep="")
+    rowIX <- grep(front,rownames(data))
+    ids <- rownames(data)[rowIX]
+    locs <- as.numeric(gsub(front,"",ids))
+    z <- data[ids,]
+  
+  }
+  
   
   if(method == "image" & is.null(dlim)) {
     dlim <- range(z,na.rm=TRUE,finite=TRUE)
@@ -404,12 +410,12 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
 	y <- c(y,chr.size)
 	  
     image(y=y,z=t(z),axes=FALSE,xlim=c(0-offset,1-offset),ylim=ylim,zlim=dlim,main=main,xlab=xlab,ylab=ylab,...)
-    if(!is.na(na.color) & any(is.na(y))) {
-	na.z <- ifelse(is.na(z),1,NA)
-	    str(z)
-	    str(na.z)
-	    cat("asdf")
-	try(image(y=y,z=t(na.z),axes=FALSE,xlim=c(0-offset,1-offset),ylim=ylim,col=na.color,add=T),silent=T)
+    if(!is.na(na.color) & any(is.na(z))) {
+    	na.z <- ifelse(is.na(z),1,NA)
+	    #str(z)
+	    #str(na.z)
+	    #cat("asdf")
+  	try(image(y=y,z=t(na.z),axes=FALSE,xlim=c(0-offset,1-offset),ylim=ylim,col=na.color,add=T),silent=T)
     }
 	  
 
