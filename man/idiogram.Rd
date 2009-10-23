@@ -11,7 +11,8 @@ idiogram(data, genome, chr=NULL, organism=NULL,
 method=c("plot","matplot","image"), margin=c("ticks","idiogram"),
 grid.col=c("red","grey"), grid.lty=c(1,2), widths=c(1,2),
 relative=FALSE, dlim=NULL, main=NA, xlab=NA,
-ylab=NA,cex.axis=.7,na.color = par("bg"),cen.color="red",...)
+ylab=NA,cex.axis=.7,na.color = par("bg"),cen.color="red", mb=FALSE,
+...)
 }
 
 \arguments{
@@ -47,7 +48,11 @@ ylab=NA,cex.axis=.7,na.color = par("bg"),cen.color="red",...)
   \item{cex.axis}{ the magnification to be used for axis annotation
     relative to the current.}
   \item{na.color}{ color to be used for NA values, defaults to: par("bg")}
-  \item{cen.color}{ color to be used for the centromere when margin="idiogram", defaults to: "red"}  
+  \item{cen.color}{ color to be used for the centromere when
+	margin="idiogram", defaults to: "red"}  
+  \item{mb}{ if \code{TRUE}, subset \code{data} to include just those row names
+	starting with the value of the argument \code{chr}. Otherwise, use
+	\code{chromLoc} as outlined below.}
   \item{\dots}{ additional graphical parameters can be given as
     arguments.}
 }
