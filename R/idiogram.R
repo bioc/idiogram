@@ -342,8 +342,19 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
     leftOver <- oldMai[2]/7
     newMai <- c(oldMai[1],leftOver,oldMai[3],leftOver + par()$pin[1] + par()$mai[4])
     par(mai=newMai)
+
+
+      ## mice have a slightly different staining - also no centromere..    
+  if(organism=="m"){
+    ann <- c("gneg","gpos33","gpos66","gpos75","gpos100")
+    bColor <- c(grey(5:0/5))   
+    }
+  if(organism!="m"){
     ann <- c("acen","gvar","stalk","gneg","gpos25","gpos50","gpos75","gpos100")
     bColor <- c(cen.color,"grey","blue",grey(4:0/4))  
+  }
+
+
     new.colors <- rev(cyto@stain)
     ord <- match((new.colors),ann)
     bColor <- bColor[ord]
