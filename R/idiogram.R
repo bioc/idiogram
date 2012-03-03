@@ -362,8 +362,8 @@ idiogram <- function(data,genome,chr=NULL,organism=NULL,method=c("plot","matplot
         ## Draw idiogram ends....
       par(xpd=NA)
       barplot(matrix(rev(bands),ncol=1),border="black",col=NA,axes=F)
-      draw.circle(.7,0,.5,n=500,col="black")
-      draw.circle(.7,sum(bands),.5,n=500,col="black")
+      draw.circle(.7,0,.5,nv=500,col="black")
+      draw.circle(.7,sum(bands),.5,nv=500,col="black")
       par(new=T)
       barplot(matrix(rev(bands),ncol=1),border="black",col=bColor,axes=F)
       par(new=T)

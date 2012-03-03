@@ -52,9 +52,9 @@
    curWarn <- getOption("warn")
    options(warn=0)
    on.exit(options(warn=curWarn), add=TRUE)
-   if (require(hgu95av2) & require(idiogram)) {
+   if (require(hgu95av2.db) & require(idiogram)) {
      data(Hs.cytoband)
-     z <- buildChromLocation.2("hgu95av2",major="arms")
-   } else print("This example requires the hgu95av2 data package")
+     z <- buildChromLocation.2("hgu95av2.db",major="arms")
+   } else print("This example requires the hgu95av2.db data package")
 }
 \keyword{ utilities }
